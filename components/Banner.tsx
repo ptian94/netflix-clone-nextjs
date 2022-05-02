@@ -4,6 +4,8 @@ import { doubanRes, Movie } from '../typings'
 import Image from 'next/image'
 import { FaPlay } from 'react-icons/fa'
 import { InformationCircleIcon } from '@heroicons/react/solid'
+import { useRecoilState } from 'recoil'
+import { modalState, movieState } from '../atoms/modalAtom'
 
 type Props = {
   trending: Movie[]
@@ -12,6 +14,8 @@ type Props = {
 const Banner = ({ trending }: Props) => {
   // console.log('trending:', trending)
   const [movie, setMovie] = useState<Movie | null>(null)
+  const [showModal, setShowModal] = useRecoilState(modalState)
+  const [currentMovie, setCurrentMovie] = useRecoilState(movieState)
 
   useEffect(() => {
     setMovie(trending[Math.floor(Math.random() * trending.length)])
@@ -40,7 +44,13 @@ const Banner = ({ trending }: Props) => {
           <FaPlay className="h-4 w-4 text-black md:h-7 md:w-7" />
           播放
         </button>
-        <button className="bannerBtn bg-[grey]/70">
+        <button
+          className="bannerBtn bg-[grey]/70"
+          onClick={() => {
+            setShowModal(true)
+            setCurrentMovie(movie)
+          }}
+        >
           更多信息
           <InformationCircleIcon className="h-5 w-5 md:h-8 md:w-8" />
         </button>

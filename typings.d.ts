@@ -8,6 +8,8 @@ export interface Movie {
   homepage: string
   id: number
   imdb_id: string
+  first_air_date: Date
+  media_type: string
   name: string
   original_language: string
   original_title: string
@@ -48,6 +50,16 @@ export interface ProductionCountry {
 export interface SpokenLanguage {
   iso_639_1: string
   name: string
+}
+
+export interface Element {
+  type:
+    | 'Bloopers'
+    | 'Featurette'
+    | 'Behind the Scenes'
+    | 'Clip'
+    | 'Trailer'
+    | 'Teaser'
 }
 
 //doubanReq

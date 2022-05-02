@@ -10,6 +10,9 @@ import Row from '../components/Row'
 import axios from 'axios'
 import DoubanRow from '../components/DoubanRow'
 import useAuth from '../hooks/useAuth'
+import { useRecoilState } from 'recoil'
+import { modalState } from '../atoms/modalAtom'
+import Modal from '../components/Modal'
 
 type Props = {
   trending: Movie[]
@@ -22,6 +25,7 @@ const Home = ({ trending, topRated, documentaries }: Props) => {
   // console.log('action movie:', actionMovie)
   // console.log('genres:', genres)
   // console.log('doubannres:', top250)
+  const [showModal, setShowModal] = useRecoilState(modalState)
   const { loading } = useAuth()
 
   if (loading) return 'Loading...'
@@ -51,6 +55,7 @@ const Home = ({ trending, topRated, documentaries }: Props) => {
         </section>
       </main>
       {/* modal */}
+      {showModal && <Modal />}
     </div>
   )
 }
