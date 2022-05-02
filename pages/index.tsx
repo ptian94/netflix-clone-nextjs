@@ -7,33 +7,29 @@ import Header from '../components/Header'
 import doubanReq from '../utils/douban'
 import requests from '../utils/requests'
 import Row from '../components/Row'
+import axios from 'axios'
+import DoubanRow from '../components/DoubanRow'
+import useAuth from '../hooks/useAuth'
 
 type Props = {
   trending: Movie[]
-  netflixOriginals: Movie[]
   topRated: Movie[]
-  actionMovie: Movie[]
-  comedyMovie: Movie[]
-  horrorMovie: Movie[]
-  romanceMovie: Movie[]
   documentaries: Movie[]
+  // top250: doubanRes
 }
 
-const Home = ({
-  trending,
-  netflixOriginals,
-  topRated,
-  actionMovie,
-  comedyMovie,
-  horrorMovie,
-  romanceMovie,
-  documentaries,
-}: Props) => {
-  console.log('action movie:', actionMovie)
+const Home = ({ trending, topRated, documentaries }: Props) => {
+  // console.log('action movie:', actionMovie)
+  // console.log('genres:', genres)
+  // console.log('doubannres:', top250)
+  const { loading } = useAuth()
+
+  if (loading) return 'Loading...'
+
   return (
     <div className="relative h-screen bg-gradient-to-b lg:h-[140vh]">
       <Head>
-        <title>Create Next App</title>
+        <title>Netflix</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -51,6 +47,7 @@ const Home = ({
           {/* <Row title="Scary Movies" movies={horrorMovie} /> */}
           {/* <Row title="Romance Movies" movies={romanceMovie} /> */}
           <Row title="Documentaries" movies={documentaries} />
+          {/* <DoubanRow title="Top 250" movies={top250.data} /> */}
         </section>
       </main>
       {/* modal */}
@@ -61,48 +58,25 @@ const Home = ({
 export default Home
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const [
-    netflixOrigin,
-    trending,
-    topRated,
-    actionMovies,
-    comedyMovies,
-    horrorMovies,
-    romanceMovies,
-    documentaries,
-    // movie,
-  ] = await Promise.all([
-    fetch(requests.fetchNetflixOriginals).then((res) => res.json()),
+  const [trending, topRated, documentaries] = await Promise.all([
     fetch(requests.fetchTrending).then((res) => res.json()),
     fetch(requests.fetchTopRated).then((res) => res.json()),
-    fetch(requests.fetchActionMovies).then((res) => res.json()),
-    fetch(requests.fetchComedyMovies).then((res) => res.json()),
-    fetch(requests.fetchHorrorMovies).then((res) => res.json()),
-    fetch(requests.fetchRomanceMovies).then((res) => res.json()),
     fetch(requests.fetchDocumentaries).then((res) => res.json()),
-    // fetch(requests.fetchMovieById).then((res) => res.json()),
   ])
 
   // fetch douban
-  const fetchTop250 = await fetch(doubanReq.fetchTop250).then((res) =>
-    res.json()
-  )
+  // const fetchTop250 = await axios
+  //   .get(doubanReq.fetchTop250)
+  //   .then((res) => res.data)
 
   return {
     props: {
       // props for your component
-      // movie: movie,
-      netflixOrigin: netflixOrigin.results,
       trending: trending.results,
       topRated: topRated.results,
-      actionMovies: actionMovies.results,
-      comedyMovies: comedyMovies.results,
-      horrorMovies: horrorMovies.results,
-      romanceMovies: romanceMovies.results,
       documentaries: documentaries.results,
-
       // using douban api
-      // fetchTop250,
+      // top250: fetchTop250,
     },
   }
 }

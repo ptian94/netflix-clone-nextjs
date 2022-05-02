@@ -1,11 +1,13 @@
 import { BellIcon, SearchIcon } from '@heroicons/react/solid'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import useAuth from '../hooks/useAuth'
 
 type Props = {}
 
 const Header = (props: Props) => {
   const [isScroll, setIsScroll] = useState(false)
+  const { logout } = useAuth()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,7 +29,7 @@ const Header = (props: Props) => {
       {/* logo and nav bar */}
       <div className="flex items-center space-x-2 md:space-x-10">
         <img
-          src="https://rb.gy/ulxxee"
+          src="/LoginPage/Netflix_2015_logo.svg"
           alt="logo"
           width={100}
           height={100}
@@ -46,13 +48,14 @@ const Header = (props: Props) => {
         <SearchIcon className="hidden h-6 w-6 md:inline" />
         <p className="hidden lg:inline">Kids</p>
         <BellIcon className="h-6 w-6" />
-        <Link href="/account">
-          <img
-            src="https://rb.gy/g1pwyx"
-            alt="account"
-            className="cursor-pointer rounded"
-          />
-        </Link>
+        {/* <Link href="/account"> */}
+        <img
+          src="/Header/account.png"
+          alt="account"
+          className="cursor-pointer rounded"
+          onClick={logout}
+        />
+        {/* </Link> */}
       </div>
     </header>
   )

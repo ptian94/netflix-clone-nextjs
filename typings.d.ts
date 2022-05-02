@@ -53,7 +53,7 @@ export interface SpokenLanguage {
 //doubanReq
 
 export interface doubanRes {
-  data: Datum[]
+  data: doubanMovie[]
   createdAt: number
   updatedAt: number
   id: string
